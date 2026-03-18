@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tochratana-template-nextjs-4687
+  namespace: apps
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tochratana-template-nextjs-4687.tochratana.com
+      secretName: tochratana-template-nextjs-4687-tls
+  rules:
+    - host: tochratana-template-nextjs-4687.tochratana.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tochratana-template-nextjs-4687
+                port:
+                  number: 80
