@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tochratana-template-nextjs-2863
+  namespace: apps
+  labels:
+    app: tochratana-template-nextjs-2863
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: tochratana-template-nextjs-2863
+  template:
+    metadata:
+      labels:
+        app: tochratana-template-nextjs-2863
+    spec:
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: tochratana-template-nextjs-2863
+          image: docker.io/tochratana/tochratana-template-nextjs-2863:bootstrap
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
