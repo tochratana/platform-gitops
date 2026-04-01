@@ -24,6 +24,8 @@ spec:
         repoURL: https://github.com/tochratana/platform-gitops.git
         targetRevision: main
         path: 'apps/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}'
+        helm:
+          releaseName: '{{ printf "%s-%s" (index .path.segments 2) (index .path.segments 3) | trunc 53 | trimSuffix "-" }}'
       destination:
         server: https://kubernetes.default.svc
         namespace: 'user-{{ index .path.segments 2 }}'
