@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/159990218/tochratana-template-nextjs-1487"
-  tag: "159990218-95-5a834425d3af" # managed-by-jenkins-image-tag
+  tag: "159990218-96-6fe3cf7b5074" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
