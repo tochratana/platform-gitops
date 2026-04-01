@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "registry.example.com/platform/user-123/sample-app"
-  tag: "159990218-88-cd32aca03f52"# managed-by-jenkins-image-tag
+  tag: "159990218-89-cd32aca03f52"# managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
