@@ -30,7 +30,9 @@ spec:
         namespace: 'user-{{- if eq (len .path.segments) 5 -}}{{ index .path.segments 2 }}{{- else -}}{{ index .path.segments 1 }}{{- end -}}'
       syncPolicy:
         automated:
-          prune: true
+          # During clean-start/reset phases, keep prune disabled to avoid
+          # deleting workloads when apps/ is temporarily empty.
+          prune: false
           selfHeal: true
         syncOptions:
           - CreateNamespace=true

@@ -28,6 +28,7 @@ apps/
 - Only `image.tag` is updated for each deployment (immutable tag per build)
 - ArgoCD ApplicationSet discovers each app folder automatically (legacy and workspace-aware paths)
 - Auto-sync is enabled with prune + self-heal
+- For initial reset/bootstrapping, set ApplicationSet `prune: false` until first apps are created.
 - App namespace is isolated per user:
   - `namespace = user-<userId>`
 

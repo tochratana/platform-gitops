@@ -1,3 +1,4 @@
 # Deprecated by ApplicationSet-based discovery.
 # Per-project ArgoCD Applications are now generated automatically from:
-# - apps/<userId>/<projectName>
+# - apps/<workspaceId>/<userId>/<projectName> (current)
+# - apps/<userId>/<projectName> (legacy compatibility)
