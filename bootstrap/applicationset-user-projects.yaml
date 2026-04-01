@@ -7,7 +7,7 @@ spec:
   goTemplate: true
   generators:
     - git:
-        repoURL: git@github.com:tochratana/platform-gitops.git
+        repoURL: https://github.com/tochratana/platform-gitops.git
         revision: main
         files:
           - path: apps/*/*/Chart.yaml
@@ -22,7 +22,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: git@github.com:tochratana/platform-gitops.git
+        repoURL: https://github.com/tochratana/platform-gitops.git
         targetRevision: main
         path: '{{- if eq (len .path.segments) 5 -}}apps/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}{{- else -}}apps/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}{{- end -}}'
       destination:
