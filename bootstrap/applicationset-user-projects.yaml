@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: user-projects
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: git@github.com:tochratana/platform-gitops.git
+        revision: main
+        files:
+          - path: apps/*/*/Chart.yaml
+          - path: apps/*/*/*/Chart.yaml
+  template:
+    metadata:
+      name: '{{- if eq (len .path.segments) 5 -}}{{ printf "%s-%s-%s" (index .path.segments 1) (index .path.segments 2) (index .path.segments 3) | trunc 63 | trimSuffix "-" }}{{- else -}}{{ printf "%s-%s" (index .path.segments 1) (index .path.segments 2) | trunc 63 | trimSuffix "-" }}{{- end -}}'
+      labels:
+        platform.devops/workspace-id: '{{- if eq (len .path.segments) 5 -}}{{ index .path.segments 1 }}{{- else -}}legacy{{- end -}}'
+        platform.devops/user-id: '{{- if eq (len .path.segments) 5 -}}{{ index .path.segments 2 }}{{- else -}}{{ index .path.segments 1 }}{{- end -}}'
+        platform.devops/project-name: '{{- if eq (len .path.segments) 5 -}}{{ index .path.segments 3 }}{{- else -}}{{ index .path.segments 2 }}{{- end -}}'
+    spec:
+      project: default
+      source:
+        repoURL: git@github.com:tochratana/platform-gitops.git
+        targetRevision: main
+        path: '{{- if eq (len .path.segments) 5 -}}apps/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}{{- else -}}apps/{{ index .path.segments 1 }}/{{ index .path.segments 2 }}{{- end -}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'user-{{- if eq (len .path.segments) 5 -}}{{ index .path.segments 2 }}{{- else -}}{{ index .path.segments 1 }}{{- end -}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

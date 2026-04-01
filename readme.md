@@ -1,60 +1,43 @@
 # platform-gitops
 
-GitOps state store for yourplatform.com deployments.
+GitOps source of truth for multi-tenant application deployments.
 
-## How it works
+## Repository layout
 
-- Jenkins writes to `apps/<app-name>/` after every successful build
-- ArgoCD watches this repo and syncs changes to the Kubernetes cluster automatically
-- Never edit files in `apps/` manually — let Jenkins manage them
+```text
+bootstrap/
+  argocd-app-of-apps.yaml
+  applicationset-user-projects.yaml
+apps/
+  <workspaceId>/
+    <userId>/
+      namespace.yaml
+      <projectName>/
+        Chart.yaml
+        values.yaml
+        templates/
+          deployment.yaml
+          service.yaml
+          ingress.yaml
+          hpa.yaml
+```
 
-## Bootstrap (run once)
+## Deployment model
 
-kubectl apply -f bootstrap/namespace.yaml
+- Jenkins writes app release data to `apps/<workspaceId>/<userId>/<projectName>/values.yaml`
+- Only `image.tag` is updated for each deployment (immutable tag per build)
+- ArgoCD ApplicationSet discovers each app folder automatically (legacy and workspace-aware paths)
+- Auto-sync is enabled with prune + self-heal
+- App namespace is isolated per user:
+  - `namespace = user-<userId>`
+
+## Bootstrap
+
+```bash
 kubectl apply -n argocd -f bootstrap/argocd-app-of-apps.yaml
-
-## Adding a registry secret
-
-kubectl create secret docker-registry registry-secret \
-  --docker-server=registry.yourplatform.com \
-  --docker-username=YOUR_USER \
-  --docker-password=YOUR_PASS \
-  --namespace=apps
-
-## Repo rules
-
-- `bootstrap/`  → applied manually once, never touched again
-- `apps/`       → written by Jenkins CI only, never edit by hand
 ```
 
----
+## Notes
 
-## The full deploy lifecycle in one picture
-```
-User clicks Deploy
-      │
-      ▼
-Spring Boot backend
-  • saves project (status = BUILDING)
-  • calls Jenkins API
-      │
-      ▼
-Jenkins pipeline
-  • clones user repo
-  • builds app + Docker image
-  • pushes image to registry
-  • runs update-gitops.sh
-      │
-      ▼
-platform-gitops / apps / <app-name> /
-  • deployment.yaml  ← image tag updated here
-  • service.yaml
-  • ingress.yaml
-      │
-      ▼
-ArgoCD detects git push (polls every 3 min or webhook)
-  • syncs deployment.yaml → Kubernetes
-  • Kubernetes pulls new image, rolls out pod
-      │
-      ▼
-https://<app-name>.yourplatform.com  ← live
+- Do not store registry credentials directly in Git.
+- Use Sealed Secrets or External Secrets for `registry-secret` in tenant namespaces.

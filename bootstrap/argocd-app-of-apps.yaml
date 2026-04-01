@@ -1,29 +1,24 @@
-# Declaritive for each chart for deploy service 
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: platform-apps
+  name: platform-gitops-bootstrap
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-
   source:
-    repoURL: git@github.com:yourorg/platform-gitops.git
-    targetRevision: HEAD
-    path: apps
+    repoURL: git@github.com:tochratana/platform-gitops.git
+    targetRevision: main
+    path: bootstrap
     directory:
-      recurse: true          # watches all subfolders under apps/
-
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: apps
-
+    namespace: argocd
   syncPolicy:
     automated:
-      prune: true            # removes resources deleted from git
-      selfHeal: true         # reverts manual kubectl changes
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
