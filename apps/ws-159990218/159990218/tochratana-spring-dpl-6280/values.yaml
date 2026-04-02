@@ -1,0 +1,55 @@
+app:
+  name: "tochratana-spring-dpl-6280"
+  userId: "159990218"
+  projectName: "tochratana-spring-dpl-6280"
+  namespace: "user-159990218"
+  framework: "springboot-gradle"
+  containerPort: 3000
+  servicePort: 80
+  domain: "tochratana.com"
+  host: "tochratana-spring-dpl-6280-ws-159990218.tochratana.com" # managed-by-jenkins-host
+
+image:
+  repository: "harbor.devith.it.com/deployment-pipeline/159990218/tochratana-spring-dpl-6280"
+  tag: "159990218-101-0f72e7020610" # managed-by-jenkins-image-tag
+  pullPolicy: "IfNotPresent"
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+
+probes:
+  readiness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  liveness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 30
+    periodSeconds: 15
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    enabled: true
+    secretName: "tochratana-spring-dpl-6280-tls"
+
+imagePullSecrets:
+  - name: "registry-secret"
