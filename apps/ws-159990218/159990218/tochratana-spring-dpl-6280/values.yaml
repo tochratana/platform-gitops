@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/159990218/tochratana-spring-dpl-6280"
-  tag: "159990218-102-0f72e7020610" # managed-by-jenkins-image-tag
+  tag: "159990218-103-0f72e7020610" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
@@ -53,3 +53,23 @@ ingress:
 
 imagePullSecrets:
   - name: "registry-secret"
+
+probes:
+  mode: "tcp"
+  startup:
+    enabled: true
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    failureThreshold: 24
+  readiness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 3
