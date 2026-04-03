@@ -1,2 +1,0 @@
-# Deprecated: shared apps namespace is no longer used.
-# Each tenant receives an isolated namespace: user-<userId>.
