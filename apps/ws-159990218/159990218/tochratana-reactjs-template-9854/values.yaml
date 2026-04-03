@@ -1,0 +1,75 @@
+app:
+  name: "tochratana-reactjs-template-9854"
+  userId: "159990218"
+  projectName: "tochratana-reactjs-template-9854"
+  namespace: "user-159990218"
+  framework: "react"
+  containerPort: 80
+  servicePort: 80
+  domain: "tochratana.com"
+  host: "tochratana-reactjs-template-9854-ws-159990218.tochratana.com" # managed-by-jenkins-host
+
+image:
+  repository: "harbor.devith.it.com/deployment-pipeline/159990218/tochratana-reactjs-template-9854"
+  tag: "159990218-108-a5ee7dc0983a" # managed-by-jenkins-image-tag
+  pullPolicy: "IfNotPresent"
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+
+probes:
+  readiness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  liveness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 30
+    periodSeconds: 15
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    enabled: true
+    secretName: "tochratana-reactjs-template-9854-tls"
+
+imagePullSecrets:
+  - name: "registry-secret"
+
+probes:
+  mode: "http"
+  startup:
+    enabled: false
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    failureThreshold: 24
+  readiness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 3
