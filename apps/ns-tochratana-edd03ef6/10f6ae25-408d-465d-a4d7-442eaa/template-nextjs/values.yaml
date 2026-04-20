@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/10f6ae25-408d-465d-a4d7-442eaa/template-nextjs"
-  tag: "10f6ae25-408d-465d-a4d7-442eaa-116-6fe3cf7b5074" # managed-by-jenkins-image-tag
+  tag: "10f6ae25-408d-465d-a4d7-442eaa-117-6fe3cf7b5074" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
