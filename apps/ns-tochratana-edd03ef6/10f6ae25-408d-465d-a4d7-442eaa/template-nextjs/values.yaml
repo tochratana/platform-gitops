@@ -1,0 +1,67 @@
+app:
+  name: "template-nextjs"
+  userId: "10f6ae25-408d-465d-a4d7-442eaa"
+  projectName: "template-nextjs"
+  namespace: "user-10f6ae25-408d-465d-a4d7-442eaa"
+  framework: "nextjs"
+  containerPort: 3000
+  servicePort: 80
+  domain: "tochratana.com"
+  host: "template-nextjs-ns-tochratana-edd03ef6.tochratana.com" # managed-by-jenkins-host
+
+image:
+  repository: "harbor.devith.it.com/deployment-pipeline/10f6ae25-408d-465d-a4d7-442eaa/template-nextjs"
+  tag: "10f6ae25-408d-465d-a4d7-442eaa-142-6fe3cf7b5074" # managed-by-jenkins-image-tag
+  pullPolicy: "IfNotPresent"
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  tls:
+    enabled: true
+    secretName: "template-nextjs-tls"
+
+imagePullSecrets:
+  - name: "registry-secret"
+
+envJson: |
+  []
+
+probes:
+  mode: "http"
+  startup:
+    enabled: false
+    path: "/"
+    initialDelaySeconds: 0
+    periodSeconds: 5
+    failureThreshold: 24
+  readiness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 3
+  liveness:
+    enabled: true
+    path: "/"
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 3
