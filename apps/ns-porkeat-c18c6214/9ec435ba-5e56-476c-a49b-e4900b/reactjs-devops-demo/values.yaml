@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/9ec435ba-5e56-476c-a49b-e4900b/reactjs-devops-demo"
-  tag: "9ec435ba-5e56-476c-a49b-e4900b-144-00a04cceda3e" # managed-by-jenkins-image-tag
+  tag: "9ec435ba-5e56-476c-a49b-e4900b-145-00a04cceda3e" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
