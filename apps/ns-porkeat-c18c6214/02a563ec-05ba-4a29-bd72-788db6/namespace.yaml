@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: user-02a563ec-05ba-4a29-bd72-788db6
+  labels:
+    app.kubernetes.io/managed-by: argocd
+    platform.devops/user-namespace: "true"
