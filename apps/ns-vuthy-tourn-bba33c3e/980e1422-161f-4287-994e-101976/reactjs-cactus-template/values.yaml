@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/980e1422-161f-4287-994e-101976/reactjs-cactus-template"
-  tag: "980e1422-161f-4287-994e-101976-156-0c5161acf551" # managed-by-jenkins-image-tag
+  tag: "980e1422-161f-4287-994e-101976-165-0c5161acf551" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
