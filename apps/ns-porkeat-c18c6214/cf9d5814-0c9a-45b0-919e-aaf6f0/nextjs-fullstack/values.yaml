@@ -11,7 +11,7 @@ app:
 
 image:
   repository: "harbor.devith.it.com/deployment-pipeline/cf9d5814-0c9a-45b0-919e-aaf6f0/nextjs-fullstack"
-  tag: "cf9d5814-0c9a-45b0-919e-aaf6f0-158-9fb84f30c1b5" # managed-by-jenkins-image-tag
+  tag: "cf9d5814-0c9a-45b0-919e-aaf6f0-159-01a02e3c4ab5" # managed-by-jenkins-image-tag
   pullPolicy: "IfNotPresent"
 
 replicaCount: 1
