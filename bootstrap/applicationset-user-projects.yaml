@@ -16,6 +16,7 @@ spec:
       name: '{{ printf "%s-%s-%s" (index .path.segments 1) (index .path.segments 2) (index .path.segments 3) | trunc 63 | trimSuffix "-" }}'
       labels:
         platform.devops/workspace-id: '{{ index .path.segments 1 }}'
+        platform.devops/workspace-namespace: '{{ index .path.segments 1 }}'
         platform.devops/user-id: '{{ index .path.segments 2 }}'
         platform.devops/project-name: '{{ index .path.segments 3 }}'
     spec:
@@ -30,7 +31,7 @@ spec:
             - values.yaml
       destination:
         server: https://kubernetes.default.svc
-        namespace: 'user-{{ index .path.segments 2 }}'
+        namespace: '{{ index .path.segments 1 }}'
       syncPolicy:
         automated:
           # During clean-start/reset phases, keep prune disabled to avoid

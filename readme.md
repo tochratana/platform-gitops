@@ -9,7 +9,7 @@ bootstrap/
   argocd-app-of-apps.yaml
   applicationset-user-projects.yaml
 apps/
-  <workspaceId>/
+  <workspaceNamespace>/
     <userId>/
       namespace.yaml
       <projectName>/
@@ -24,14 +24,14 @@ apps/
 
 ## Deployment model
 
-- Jenkins writes app release data to `apps/<workspaceId>/<userId>/<projectName>/values.yaml`
+- Jenkins writes app release data to `apps/<workspaceNamespace>/<userId>/<projectName>/values.yaml`
 - Jenkins writes the runtime env payload and immutable release data into `values.yaml`
 - `image.tag` and `envJson` are updated for each deployment / rollback
 - ArgoCD ApplicationSet discovers each app folder automatically (legacy and workspace-aware paths)
 - Auto-sync is enabled with prune + self-heal
 - For initial reset/bootstrapping, set ApplicationSet `prune: false` until first apps are created.
-- App namespace is isolated per user:
-  - `namespace = user-<userId>`
+- App namespace is the workspace namespace created during onboarding:
+  - `namespace = ns-<username>-<shortId>`
 
 ## Bootstrap
 
