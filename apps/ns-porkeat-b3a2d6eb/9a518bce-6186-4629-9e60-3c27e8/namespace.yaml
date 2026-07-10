@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-porkeat-b3a2d6eb
+  labels:
+    app.kubernetes.io/managed-by: argocd
+    platform.devops/workspace-namespace: "true"
